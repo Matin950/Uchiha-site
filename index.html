@@ -1,11 +1,191 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uchiha Site</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:tahoma,sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(-45deg,#000,#120000,#240000,#000);
+background-size:400% 400%;
+animation:bgMove 10s ease infinite;
+overflow:hidden;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.container{
+width:350px;
+padding:30px;
+background:rgba(0,0,0,.8);
+border:2px solid #ff0000;
+border-radius:20px;
+box-shadow:0 0 30px red;
+text-align:center;
+animation:showBox 1.2s ease;
+}
+
+@keyframes showBox{
+from{
+opacity:0;
+transform:translateY(-50px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.logo{
+width:120px;
+height:120px;
+margin:auto;
+border-radius:50%;
+background:#111;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:60px;
+color:red;
+box-shadow:0 0 25px red;
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+50%{
+transform:scale(1.1);
+box-shadow:0 0 50px red;
+}
+}
+
+h1{
+color:white;
+margin:20px 0;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+background:#111;
+border:1px solid red;
+border-radius:10px;
+color:white;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:red;
+border:none;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px red;
+}
+
+#msg{
+margin-top:15px;
+color:#ff5555;
+font-weight:bold;
+}
+
+.ripple{
+position:absolute;
+border-radius:50%;
+background:rgba(255,0,0,.5);
+transform:scale(0);
+animation:ripple .6s linear;
+pointer-events:none;
+}
+
+@keyframes ripple{
+to{
+transform:scale(10);
+opacity:0;
+}
+}
+</style>
 </head>
-<body style="text-align:center;font-family:sans-serif;margin-top:50px;">
-<h1>سلام!</h1>
-<p>به سایت اوچیها خوش اومدی 🔥</p>
+
+<body>
+
+<div class="container">
+
+<div class="logo">👁</div>
+
+<h1>ورود به قلمرو اوچیها</h1>
+
+<input type="text" id="user" placeholder="نام کاربری">
+
+<input type="password" id="pass" placeholder="رمز عبور">
+
+<button onclick="login()">ورود</button>
+
+<div id="msg"></div>
+
+</div>
+
+<script>
+
+function login(){
+
+let user=document.getElementById("user").value;
+let pass=document.getElementById("pass").value;
+
+if(user==="uchiha" && pass==="1234"){
+document.getElementById("msg").innerHTML=
+"🔥 خوش آمدی عضو خاندان اوچیها 🔥";
+document.getElementById("msg").style.color="lime";
+}else{
+document.getElementById("msg").innerHTML=
+"❌ نام کاربری یا رمز اشتباه است";
+}
+}
+
+document.addEventListener("click",function(e){
+
+const ripple=document.createElement("span");
+
+ripple.classList.add("ripple");
+
+ripple.style.left=e.pageX+"px";
+ripple.style.top=e.pageY+"px";
+
+document.body.appendChild(ripple);
+
+setTimeout(()=>{
+ripple.remove();
+},600);
+
+});
+
+</script>
+
 </body>
 </html>
