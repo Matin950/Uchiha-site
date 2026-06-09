@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<!DOCTYPE html><html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Uchiha Site</title>
-
-<style>
+<title>Uchiha Site</title><style>
 *{
 margin:0;
 padding:0;
@@ -14,101 +11,189 @@ font-family:tahoma,sans-serif;
 }
 
 body{
-height:100vh;
+background:#000;
+color:white;
+overflow-x:hidden;
+}
+
+.page{
+min-height:100vh;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
-background:linear-gradient(-45deg,#000,#120000,#240000,#000);
-background-size:400% 400%;
-animation:bgMove 10s ease infinite;
-overflow:hidden;
+padding:20px;
+background:
+radial-gradient(circle at center,#300 0%,#000 70%);
 }
 
-@keyframes bgMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
-.container{
-width:350px;
-padding:30px;
-background:rgba(0,0,0,.8);
-border:2px solid #ff0000;
+.card{
+background:rgba(20,0,0,.9);
+padding:25px;
 border-radius:20px;
-box-shadow:0 0 30px red;
+width:350px;
+max-width:95%;
 text-align:center;
-animation:showBox 1.2s ease;
-}
-
-@keyframes showBox{
-from{
-opacity:0;
-transform:translateY(-50px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+border:1px solid red;
+box-shadow:0 0 30px red;
 }
 
 .logo{
-width:120px;
-height:120px;
-margin:auto;
-border-radius:50%;
-background:#111;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:60px;
-color:red;
-box-shadow:0 0 25px red;
-animation:pulse 2s infinite;
+width:180px;
+margin-bottom:15px;
+animation:spin 12s linear infinite;
 }
 
-@keyframes pulse{
-50%{
-transform:scale(1.1);
-box-shadow:0 0 50px red;
-}
+@keyframes spin{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
 }
 
 h1{
-color:white;
-margin:20px 0;
+color:#ff3333;
+margin-bottom:15px;
 }
 
 input{
 width:100%;
 padding:12px;
-margin:10px 0;
-background:#111;
-border:1px solid red;
+margin:8px 0;
+border:none;
 border-radius:10px;
+background:#111;
 color:white;
-font-size:16px;
 }
 
 button{
 width:100%;
 padding:12px;
 margin-top:10px;
-background:red;
 border:none;
 border-radius:10px;
-font-size:18px;
-font-weight:bold;
+background:red;
 color:white;
+font-size:16px;
 cursor:pointer;
 transition:.3s;
 }
 
 button:hover{
 transform:scale(1.05);
-box-shadow:0 0 20px red;
 }
 
+.hidden{
+display:none;
+}
+
+ul{
+text-align:right;
+margin-top:20px;
+line-height:2;
+}
+
+.power{
+background:#111;
+padding:10px;
+margin:8px;
+border-radius:10px;
+border-right:4px solid red;
+}
+
+.ripple{
+position:absolute;
+border-radius:50%;
+background:rgba(255,0,0,.4);
+transform:scale(0);
+animation:ripple .6s linear;
+pointer-events:none;
+}
+
+@keyframes ripple{
+to{
+transform:scale(8);
+opacity:0;
+}
+}
+</style></head><body><div id="loginPage" class="page"><div class="card"><img src="sharingan.png" class="logo"><h1>ورود به خاندان اوچیها</h1><input id="username" placeholder="نام کاربری"><input id="password" type="password" placeholder="رمز عبور"><button onclick="registerUser()">ثبت نام</button>
+
+<button onclick="loginUser()">ورود</button>
+
+<p id="msg"></p></div></div><div id="homePage" class="page hidden"><img src="sharingan.png" class="logo"><h1 id="welcome"></h1><h2>قدرت های خاندان اوچیها 👁️</h2><div class="power">🔥 Sharingan</div>
+<div class="power">🔥 Mangekyō Sharingan</div>
+<div class="power">🔥 Amaterasu</div>
+<div class="power">🔥 Tsukuyomi</div>
+<div class="power">🔥 Susanoo</div>
+<div class="power">🔥 Izanagi</div>
+<div class="power">🔥 Izanami</div><button onclick="logout()">خروج</button>
+
+</div><script>
+
+function registerUser(){
+
+let u=document.getElementById("username").value;
+let p=document.getElementById("password").value;
+
+if(!u || !p){
+msg.innerHTML="اطلاعات را کامل کن";
+return;
+}
+
+localStorage.setItem("uchiha_user",u);
+localStorage.setItem("uchiha_pass",p);
+
+msg.innerHTML="ثبت نام موفق بود ✅";
+msg.style.color="lime";
+}
+
+function loginUser(){
+
+let u=document.getElementById("username").value;
+let p=document.getElementById("password").value;
+
+let su=localStorage.getItem("uchiha_user");
+let sp=localStorage.getItem("uchiha_pass");
+
+if(u===su && p===sp){
+
+document.getElementById("loginPage").classList.add("hidden");
+document.getElementById("homePage").classList.remove("hidden");
+
+document.getElementById("welcome").innerHTML=
+"خوش آمدی " + u + " 🔥";
+
+}else{
+
+msg.innerHTML="نام کاربری یا رمز اشتباه است ❌";
+msg.style.color="red";
+
+}
+}
+
+function logout(){
+
+location.reload();
+
+}
+
+document.addEventListener("click",e=>{
+
+let ripple=document.createElement("span");
+
+ripple.className="ripple";
+
+ripple.style.left=e.pageX+"px";
+ripple.style.top=e.pageY+"px";
+
+document.body.appendChild(ripple);
+
+setTimeout(()=>{
+ripple.remove();
+},600);
+
+});
+
+</script></body>
+</html>
 #msg{
 margin-top:15px;
 color:#ff5555;
