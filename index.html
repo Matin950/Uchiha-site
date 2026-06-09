@@ -3,274 +3,99 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uchiha Site</title><style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:tahoma,sans-serif;
-}
-
 body{
-background:#000;
+background:black;
 color:white;
-overflow-x:hidden;
-}
-
-.page{
-min-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-padding:20px;
-background:
-radial-gradient(circle at center,#300 0%,#000 70%);
-}
-
-.card{
-background:rgba(20,0,0,.9);
-padding:25px;
-border-radius:20px;
-width:350px;
-max-width:95%;
+font-family:tahoma;
 text-align:center;
-border:1px solid red;
-box-shadow:0 0 30px red;
+padding:20px;
 }
 
-.logo{
+.box{
+max-width:400px;
+margin:auto;
+background:#111;
+padding:20px;
+border-radius:15px;
+border:2px solid red;
+}
+
+img{
 width:180px;
-margin-bottom:15px;
-animation:spin 12s linear infinite;
-}
-
-@keyframes spin{
-from{transform:rotate(0deg);}
-to{transform:rotate(360deg);}
-}
-
-h1{
-color:#ff3333;
-margin-bottom:15px;
 }
 
 input{
-width:100%;
-padding:12px;
-margin:8px 0;
+width:90%;
+padding:10px;
+margin:5px;
+border-radius:8px;
 border:none;
-border-radius:10px;
-background:#111;
-color:white;
 }
 
 button{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:10px;
+padding:10px 20px;
 background:red;
 color:white;
-font-size:16px;
-cursor:pointer;
-transition:.3s;
+border:none;
+border-radius:8px;
+margin:5px;
 }
 
-button:hover{
-transform:scale(1.05);
-}
-
-.hidden{
+#home{
 display:none;
 }
-
-ul{
-text-align:right;
-margin-top:20px;
-line-height:2;
-}
-
-.power{
-background:#111;
-padding:10px;
-margin:8px;
-border-radius:10px;
-border-right:4px solid red;
-}
-
-.ripple{
-position:absolute;
-border-radius:50%;
-background:rgba(255,0,0,.4);
-transform:scale(0);
-animation:ripple .6s linear;
-pointer-events:none;
-}
-
-@keyframes ripple{
-to{
-transform:scale(8);
-opacity:0;
-}
-}
-</style></head><body><div id="loginPage" class="page"><div class="card"><img src="sharingan.png" class="logo"><h1>ورود به خاندان اوچیها</h1><input id="username" placeholder="نام کاربری"><input id="password" type="password" placeholder="رمز عبور"><button onclick="registerUser()">ثبت نام</button>
+</style></head>
+<body><div id="login" class="box"><img src="sharingan.png"><h1>ورود به خاندان اوچیها</h1><input id="user" placeholder="نام کاربری"><input id="pass" type="password" placeholder="رمز عبور"><br><button onclick="registerUser()">ثبت نام</button>
 
 <button onclick="loginUser()">ورود</button>
 
-<p id="msg"></p></div></div><div id="homePage" class="page hidden"><img src="sharingan.png" class="logo"><h1 id="welcome"></h1><h2>قدرت های خاندان اوچیها 👁️</h2><div class="power">🔥 Sharingan</div>
-<div class="power">🔥 Mangekyō Sharingan</div>
-<div class="power">🔥 Amaterasu</div>
-<div class="power">🔥 Tsukuyomi</div>
-<div class="power">🔥 Susanoo</div>
-<div class="power">🔥 Izanagi</div>
-<div class="power">🔥 Izanami</div><button onclick="logout()">خروج</button>
+<p id="msg"></p></div><div id="home" class="box"><img src="sharingan.png"><h1 id="welcome"></h1><h2>قدرت های اوچیها</h2><p>👁️ Sharingan</p>
+<p>🔥 Amaterasu</p>
+<p>🌙 Tsukuyomi</p>
+<p>🛡️ Susanoo</p>
+<p>⚡ Mangekyo Sharingan</p><button onclick="logout()">خروج</button>
 
 </div><script>
 
 function registerUser(){
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
 
-let u=document.getElementById("username").value;
-let p=document.getElementById("password").value;
+localStorage.setItem("user",u);
+localStorage.setItem("pass",p);
 
-if(!u || !p){
-msg.innerHTML="اطلاعات را کامل کن";
-return;
-}
-
-localStorage.setItem("uchiha_user",u);
-localStorage.setItem("uchiha_pass",p);
-
-msg.innerHTML="ثبت نام موفق بود ✅";
-msg.style.color="lime";
+document.getElementById("msg").innerHTML="ثبت نام موفق بود";
 }
 
 function loginUser(){
 
-let u=document.getElementById("username").value;
-let p=document.getElementById("password").value;
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
 
-let su=localStorage.getItem("uchiha_user");
-let sp=localStorage.getItem("uchiha_pass");
+if(
+u===localStorage.getItem("user")
+&&
+p===localStorage.getItem("pass")
+){
 
-if(u===su && p===sp){
-
-document.getElementById("loginPage").classList.add("hidden");
-document.getElementById("homePage").classList.remove("hidden");
+document.getElementById("login").style.display="none";
+document.getElementById("home").style.display="block";
 
 document.getElementById("welcome").innerHTML=
-"خوش آمدی " + u + " 🔥";
+"خوش آمدی " + u;
 
 }else{
 
-msg.innerHTML="نام کاربری یا رمز اشتباه است ❌";
-msg.style.color="red";
+document.getElementById("msg").innerHTML=
+"نام کاربری یا رمز اشتباه است";
 
 }
+
 }
 
 function logout(){
-
 location.reload();
-
 }
-
-document.addEventListener("click",e=>{
-
-let ripple=document.createElement("span");
-
-ripple.className="ripple";
-
-ripple.style.left=e.pageX+"px";
-ripple.style.top=e.pageY+"px";
-
-document.body.appendChild(ripple);
-
-setTimeout(()=>{
-ripple.remove();
-},600);
-
-});
 
 </script></body>
-</html>
-#msg{
-margin-top:15px;
-color:#ff5555;
-font-weight:bold;
-}
-
-.ripple{
-position:absolute;
-border-radius:50%;
-background:rgba(255,0,0,.5);
-transform:scale(0);
-animation:ripple .6s linear;
-pointer-events:none;
-}
-
-@keyframes ripple{
-to{
-transform:scale(10);
-opacity:0;
-}
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<div class="logo">👁</div>
-
-<h1>ورود به قلمرو اوچیها</h1>
-
-<input type="text" id="user" placeholder="نام کاربری">
-
-<input type="password" id="pass" placeholder="رمز عبور">
-
-<button onclick="login()">ورود</button>
-
-<div id="msg"></div>
-
-</div>
-
-<script>
-
-function login(){
-
-let user=document.getElementById("user").value;
-let pass=document.getElementById("pass").value;
-
-if(user==="uchiha" && pass==="1234"){
-document.getElementById("msg").innerHTML=
-"🔥 خوش آمدی عضو خاندان اوچیها 🔥";
-document.getElementById("msg").style.color="lime";
-}else{
-document.getElementById("msg").innerHTML=
-"❌ نام کاربری یا رمز اشتباه است";
-}
-}
-
-document.addEventListener("click",function(e){
-
-const ripple=document.createElement("span");
-
-ripple.classList.add("ripple");
-
-ripple.style.left=e.pageX+"px";
-ripple.style.top=e.pageY+"px";
-
-document.body.appendChild(ripple);
-
-setTimeout(()=>{
-ripple.remove();
-},600);
-
-});
-
-</script>
-
-</body>
 </html>
