@@ -3,98 +3,212 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uchiha Site</title><style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:tahoma,sans-serif;
+}
+
 body{
-background:black;
-color:white;
-font-family:tahoma;
-text-align:center;
+background:#000;
+color:#fff;
+min-height:100vh;
+background:linear-gradient(135deg,#000,#180000,#000);
+}
+
+.page{
+display:none;
+min-height:100vh;
+justify-content:center;
+align-items:center;
 padding:20px;
 }
 
-.box{
-max-width:400px;
-margin:auto;
+.active{
+display:flex;
+}
+
+.card{
+width:380px;
+max-width:95%;
 background:#111;
-padding:20px;
-border-radius:15px;
-border:2px solid red;
+padding:25px;
+border-radius:20px;
+border:2px solid #ff0000;
+box-shadow:0 0 25px red;
+text-align:center;
 }
 
-img{
-width:180px;
+.logo{
+width:160px;
+margin-bottom:15px;
+animation:spin 10s linear infinite;
+}
+
+@keyframes spin{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
+}
+
+h1,h2{
+margin-bottom:15px;
+color:#ff4444;
 }
 
 input{
-width:90%;
-padding:10px;
-margin:5px;
-border-radius:8px;
-border:none;
+width:100%;
+padding:12px;
+margin:8px 0;
+background:#1a1a1a;
+border:1px solid #ff3333;
+border-radius:10px;
+color:white;
 }
 
 button{
-padding:10px 20px;
+width:100%;
+padding:12px;
+margin-top:10px;
 background:red;
-color:white;
 border:none;
-border-radius:8px;
-margin:5px;
+border-radius:10px;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:.3s;
 }
 
-#home{
-display:none;
+button:hover{
+transform:scale(1.05);
 }
-</style></head>
-<body><div id="login" class="box"><img src="sharingan.png"><h1>ورود به خاندان اوچیها</h1><input id="user" placeholder="نام کاربری"><input id="pass" type="password" placeholder="رمز عبور"><br><button onclick="registerUser()">ثبت نام</button>
 
-<button onclick="loginUser()">ورود</button>
+.link-btn{
+background:#222;
+}
 
-<p id="msg"></p></div><div id="home" class="box"><img src="sharingan.png"><h1 id="welcome"></h1><h2>قدرت های اوچیها</h2><p>👁️ Sharingan</p>
-<p>🔥 Amaterasu</p>
-<p>🌙 Tsukuyomi</p>
-<p>🛡️ Susanoo</p>
-<p>⚡ Mangekyo Sharingan</p><button onclick="logout()">خروج</button>
+.power{
+background:#1a1a1a;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+border-right:4px solid red;
+}
 
+.msg{
+margin-top:10px;
+font-weight:bold;
+}
+
+.welcome{
+font-size:24px;
+margin-bottom:20px;
+}
+</style></head><body><!-- صفحه اصلی --><div class="page active" id="homePage">
+<div class="card"><img src="sharingan.png" class="logo"><h1>خاندان اوچیها</h1><button onclick="showPage('loginPage')">ورود</button>
+
+<button class="link-btn" onclick="showPage('registerPage')">
+ثبت نام
+</button></div>
+</div><!-- ثبت نام --><div class="page" id="registerPage">
+<div class="card"><h2>ثبت نام</h2><input id="regUser" placeholder="نام کاربری"><input id="regEmail" type="email" placeholder="ایمیل"><input id="regPass" type="password" placeholder="رمز عبور"><input id="regPass2" type="password" placeholder="تکرار رمز عبور"><button onclick="registerUser()">ثبت نام</button>
+
+<button class="link-btn" onclick="showPage('homePage')">
+بازگشت
+</button><p id="registerMsg" class="msg"></p></div>
+</div><!-- ورود --><div class="page" id="loginPage">
+<div class="card"><h2>ورود</h2><input id="loginUser" placeholder="نام کاربری یا ایمیل"><input id="loginPass" type="password" placeholder="رمز عبور"><button onclick="loginUser()">ورود</button>
+
+<button class="link-btn" onclick="showPage('homePage')">
+بازگشت
+</button><p id="loginMsg" class="msg"></p></div>
+</div><!-- پنل اوچیها --><div class="page" id="panelPage">
+<div class="card"><img src="sharingan.png" class="logo"><div class="welcome" id="welcomeText"></div><h2>قدرت های خاندان اوچیها</h2><div class="power">👁 Sharingan</div>
+<div class="power">🔥 Mangekyō Sharingan</div>
+<div class="power">🔥 Amaterasu</div>
+<div class="power">🌙 Tsukuyomi</div>
+<div class="power">🛡 Susanoo</div>
+<div class="power">⚔ Izanagi</div>
+<div class="power">♾ Izanami</div><button onclick="logout()">خروج</button>
+
+</div>
 </div><script>
 
+function showPage(id){
+
+document.querySelectorAll('.page').forEach(page=>{
+page.classList.remove('active');
+});
+
+document.getElementById(id).classList.add('active');
+
+}
+
 function registerUser(){
-let u=document.getElementById("user").value;
-let p=document.getElementById("pass").value;
 
-localStorage.setItem("user",u);
-localStorage.setItem("pass",p);
+let user=document.getElementById('regUser').value;
+let email=document.getElementById('regEmail').value;
+let pass=document.getElementById('regPass').value;
+let pass2=document.getElementById('regPass2').value;
 
-document.getElementById("msg").innerHTML="ثبت نام موفق بود";
+if(!user || !email || !pass || !pass2){
+
+document.getElementById('registerMsg').innerHTML=
+'همه فیلدها را کامل کن';
+
+return;
+}
+
+if(pass !== pass2){
+
+document.getElementById('registerMsg').innerHTML=
+'رمزها یکسان نیستند';
+
+return;
+}
+
+localStorage.setItem('uchiha_user',user);
+localStorage.setItem('uchiha_email',email);
+localStorage.setItem('uchiha_pass',pass);
+
+alert('ثبت نام موفق بود');
+
+showPage('homePage');
+
 }
 
 function loginUser(){
 
-let u=document.getElementById("user").value;
-let p=document.getElementById("pass").value;
+let login=document.getElementById('loginUser').value;
+let pass=document.getElementById('loginPass').value;
+
+let user=localStorage.getItem('uchiha_user');
+let email=localStorage.getItem('uchiha_email');
+let savedPass=localStorage.getItem('uchiha_pass');
 
 if(
-u===localStorage.getItem("user")
-&&
-p===localStorage.getItem("pass")
+(login===user || login===email)
+&& pass===savedPass
 ){
 
-document.getElementById("login").style.display="none";
-document.getElementById("home").style.display="block";
+document.getElementById('welcomeText').innerHTML=
+'خوش آمدی ' + user + ' 🔥';
 
-document.getElementById("welcome").innerHTML=
-"خوش آمدی " + u;
+showPage('panelPage');
 
 }else{
 
-document.getElementById("msg").innerHTML=
-"نام کاربری یا رمز اشتباه است";
+document.getElementById('loginMsg').innerHTML=
+'اطلاعات ورود اشتباه است';
 
 }
 
 }
 
 function logout(){
-location.reload();
+
+showPage('homePage');
+
 }
 
 </script></body>
